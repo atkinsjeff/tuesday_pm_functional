@@ -72,12 +72,46 @@ abline(v = reclass.m[, 2], col = "red")
 ```
 
 ## Step Four:  I Am Legend
-## STEP Five:  Export to .pdf!
-
 ```{r plot-with-legend}
 
 # plot outside of the plot region
+# make room for a legend
+par(xpd = FALSE, mar=c(5.1, 4.1, 4.1, 4.1))
 
+#here, the xpd is saying "stay inside the corral, don't plot outside boundaries"
+#bottom, up, left, right
+
+# plot
+plot(chm.class,
+     col=c("grey","blue","green"), # hard code colors, small trees (1)=white,
+		 #medium (2) = blue,  large trees (3) = green
+     main="Vegetation Height \nLower Teakettle",
+     legend=F)
+# allow legend to plot outside of bounds
+par(xpd=TRUE)
+
+# legend x and y position
+leg.x <- par()$usr[2] + 20
+leg.y <- par()$usr[4] + 50 - (abs(par()$usr[3] - par()$usr[4]) / 2)
+
+# create the legend
+legend(leg.x, leg.y,
+       legend = c("< 5 m", "5-20 m", "> 20 m"),  # make sure the order matches the colors, next
+       fill = c("grey", "blue", "green"),
+       bty="n") # turn off border)
+
+# legend((par()$usr[2] + 20), 4103300,  # set x,y legend location
+#        legend = c("    <5 m", "5-20 m", "  >20 m"),  # make sure the order matches the colors, next
+#        fill = c("grey", "blue", "green"),
+#        bty="n") # turn off border
+
+```
+
+## STEP Five:  Export to .pdf!
+
+```{r plot-to-pdf}
+
+# plot outside of the plot region
 # make room for a legend
 par(xpd = FALSE, mar=c(5.1, 4.1, 4.1, 4.1))
 
@@ -100,7 +134,7 @@ leg.y <- par()$usr[4] + 50 - (abs(par()$usr[3] - par()$usr[4]) / 2)
 
 # create the legend
 legend(leg.x, leg.y,
-       legend = c("   < 5 m", "5-20 m", " > 20 m"),  # make sure the order matches the colors, next
+       legend = c("< 5 m", "5-20 m", "> 20 m"),  # make sure the order matches the colors, next
        fill = c("grey", "blue", "green"),
        bty="n") # turn off border)
 dev.off()
