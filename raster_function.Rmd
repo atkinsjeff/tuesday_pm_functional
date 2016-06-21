@@ -82,7 +82,6 @@ abline(v = reclass.m[, 2], col = "red")
 par(xpd = FALSE, mar=c(5.1, 4.1, 4.1, 4.1))
 
 #here, the xpd is saying "stay inside the corral, don't plot outside boundaries"
-
 #bottom, up, left, right
 
 # plot
@@ -101,22 +100,22 @@ leg.y <- par()$usr[4] + 50 - (abs(par()$usr[3] - par()$usr[4]) / 2)
 
 # create the legend
 legend(leg.x, leg.y,
-       legend = c("    <5 m", "5-20 m", "  >20 m"),  # make sure the order matches the colors, next
+       legend = c("   < 5 m", "5-20 m", " > 20 m"),  # make sure the order matches the colors, next
        fill = c("grey", "blue", "green"),
        bty="n") # turn off border)
-
+dev.off()
 # legend((par()$usr[2] + 20), 4103300,  # set x,y legend location
 #        legend = c("    <5 m", "5-20 m", "  >20 m"),  # make sure the order matches the colors, next
 #        fill = c("grey", "blue", "green"),
 #        bty="n") # turn off border
-dev.off()
+
 ```
 
 ## Step Six:  Export the raster
 
 ```{r export-raster}
 writeRaster(chm.class,
-            filename="../outputs/TEAK/Teak_nsAspect.tif",
+            filename="outputs/Teak_nsAspect.tif",
             format="GTiff",
             options="COMPRESS=LZW",
             overwrite = TRUE,

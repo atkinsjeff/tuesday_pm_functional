@@ -1,0 +1,8 @@
+README for analysis of NEON LiDAR data from the Teakettle Field Site
+Code written by J.Atkins for #NEONDI16 (NEON Data Institute)
+
+email:  jeffatkins@virginia.edu
+
+This code expected to have a directory of data that is sibiling to, but not located in this repo due to the large size of the data files associated with this analysis--limiting inclusion in the repo. 
+
+Output files are set to go into the /output folder sub this directory.

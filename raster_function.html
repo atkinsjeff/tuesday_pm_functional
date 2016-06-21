@@ -197,7 +197,6 @@ abline(v = reclass.m[, 2], col = &quot;red&quot;)</code></pre>
 par(xpd = FALSE, mar=c(5.1, 4.1, 4.1, 4.1))
 
 #here, the xpd is saying &quot;stay inside the corral, don't plot outside boundaries&quot;
-
 #bottom, up, left, right
 
 # plot
@@ -216,22 +215,21 @@ leg.y &lt;- par()$usr[4] + 50 - (abs(par()$usr[3] - par()$usr[4]) / 2)
 
 # create the legend
 legend(leg.x, leg.y,
-       legend = c(&quot;    &lt;5 m&quot;, &quot;5-20 m&quot;, &quot;  &gt;20 m&quot;),  # make sure the order matches the colors, next
+       legend = c(&quot;   &lt; 5 m&quot;, &quot;5-20 m&quot;, &quot; &gt; 20 m&quot;),  # make sure the order matches the colors, next
        fill = c(&quot;grey&quot;, &quot;blue&quot;, &quot;green&quot;),
        bty=&quot;n&quot;) # turn off border)
-
-# legend((par()$usr[2] + 20), 4103300,  # set x,y legend location
-#        legend = c(&quot;    &lt;5 m&quot;, &quot;5-20 m&quot;, &quot;  &gt;20 m&quot;),  # make sure the order matches the colors, next
-#        fill = c(&quot;grey&quot;, &quot;blue&quot;, &quot;green&quot;),
-#        bty=&quot;n&quot;) # turn off border
 dev.off()</code></pre>
 <pre><code>## png 
 ##   2</code></pre>
+<pre class="r"><code># legend((par()$usr[2] + 20), 4103300,  # set x,y legend location
+#        legend = c(&quot;    &lt;5 m&quot;, &quot;5-20 m&quot;, &quot;  &gt;20 m&quot;),  # make sure the order matches the colors, next
+#        fill = c(&quot;grey&quot;, &quot;blue&quot;, &quot;green&quot;),
+#        bty=&quot;n&quot;) # turn off border</code></pre>
 </div>
 <div id="step-six-export-the-raster" class="section level2">
 <h2>Step Six: Export the raster</h2>
 <pre class="r"><code>writeRaster(chm.class,
-            filename=&quot;../outputs/TEAK/Teak_nsAspect.tif&quot;,
+            filename=&quot;outputs/Teak_nsAspect.tif&quot;,
             format=&quot;GTiff&quot;,
             options=&quot;COMPRESS=LZW&quot;,
             overwrite = TRUE,
