@@ -1,0 +1,17 @@
+---
+title: "Functionazling Rasters From NEON"
+author: "Jeff Atkins"
+date: "June 21, 2016"
+output: html_document
+---
+
+
+Start by putting up objectives/tasks that students will be working though:
+
+1. Import a raster — A lidar canopy height model (lidar/Teak_lidarCHM.tif)
+1. For the CHM, set values == 0 to NA (not trees)
+1. classify the raster according to some distribution – low medium and tall trees. This could be done using a histogram potentially or we could just decide that <2m is generally grasses / understory, <6m small trees,and the rest are tall trees. A function could import the desired thresholds. Visualize histogram/density and plot vertical cutoff lines.
+1. Take the chm and create a hillshade (http://neon-workwithdata.github.io/neon-data-institute-2016/R/create-hillshade-R/)
+1. PLOT - layer the classified raster on top of the hillshade, add a legend for each “class” - legends are super tricky to simplifying this process with a function would be good.  see: http://neon-workwithdata.github.io/neon-data-institute-2016/R/classify-by-threshold-R/  for my take on forcing a legend outside of the plot area using par settings. You may have other better forms of magic to make this work well. :)
+1. Export the plot figure to a pdf – publishable
+1. Export the classified raster as a geotiff with NaFlagg = -9999 to an outputs folder.
