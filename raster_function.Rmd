@@ -45,11 +45,12 @@ plot(chm,
 ```{r raster-height-classify}
 #lets do a histogram and get some distribution
 hist(chm)
+density(chm)
 
 #Want to focus on tree size class
-height.class.m <- c(0, 15, 1,
-                         15, 30, 2,
-                         30, 75, 3)
+height.class.m <- c(0, 5, 1,
+                         5, 20 , 2,
+                         20, 100, 3)
 
 reclass.m <- matrix(height.class.m,
                     ncol = 3,
@@ -61,6 +62,13 @@ chm.class <- reclassify(chm, reclass.m)
 #here is a draft plot by class
 plot(chm.class,
      main = "Teakettle Canopy Height By Class")
+
+
+density(chm, 
+        main = "Canopy heights at Teakettle site\n with bin cuttofs in red",
+        xlab = "Height (m)")
+#this adds lines to the density plot
+abline(v = reclass.m[, 2], col = "red")
 ```
 
 ## Step Four:  I Am Legend
@@ -71,23 +79,36 @@ plot(chm.class,
 # plot outside of the plot region
 
 # make room for a legend
-par(xpd = FALSE, mar=c(5.1, 4.1, 4.1, 4.5))
+par(xpd = FALSE, mar=c(5.1, 4.1, 4.1, 4.1))
+
+#here, the xpd is saying "stay inside the corral, don't plot outside boundaries"
+
+#bottom, up, left, right
 
 # plot
-pdf("../outputs/chm.class.pdf")
-p.chm <- plot(chm.class,
+pdf("outputs/chm.class.pdf", width = 6, height = 6)
+plot(chm.class,
      col=c("grey","blue","green"), # hard code colors, small trees (1)=white,
 		 #medium (2) = blue,  large trees (3) = green
-     main="Tree Canopy Height \nLower Teakettle",
+     main="Vegetation Height \nLower Teakettle",
      legend=F)
 # allow legend to plot outside of bounds
 par(xpd=TRUE)
 
+# legend x and y position
+leg.x <- par()$usr[2] + 20
+leg.y <- par()$usr[4] + 50 - (abs(par()$usr[3] - par()$usr[4]) / 2)
+
 # create the legend
-legend((par()$usr[2] + 20), 4103300,  # set x,y legend location
-       legend = c("Small", "Medium", "Large"),  # make sure the order matches the colors, next
+legend(leg.x, leg.y,
+       legend = c("    <5 m", "5-20 m", "  >20 m"),  # make sure the order matches the colors, next
        fill = c("grey", "blue", "green"),
-       bty="n") # turn off border
+       bty="n") # turn off border)
+
+# legend((par()$usr[2] + 20), 4103300,  # set x,y legend location
+#        legend = c("    <5 m", "5-20 m", "  >20 m"),  # make sure the order matches the colors, next
+#        fill = c("grey", "blue", "green"),
+#        bty="n") # turn off border
 dev.off()
 ```
 
