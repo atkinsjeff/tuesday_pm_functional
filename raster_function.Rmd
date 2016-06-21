@@ -11,7 +11,95 @@ Start by putting up objectives/tasks that students will be working though:
 1. Import a raster — A lidar canopy height model (lidar/Teak_lidarCHM.tif)
 1. For the CHM, set values == 0 to NA (not trees)
 1. classify the raster according to some distribution – low medium and tall trees. This could be done using a histogram potentially or we could just decide that <2m is generally grasses / understory, <6m small trees,and the rest are tall trees. A function could import the desired thresholds. Visualize histogram/density and plot vertical cutoff lines.
-1. Take the chm and create a hillshade (http://neon-workwithdata.github.io/neon-data-institute-2016/R/create-hillshade-R/)
+
 1. PLOT - layer the classified raster on top of the hillshade, add a legend for each “class” - legends are super tricky to simplifying this process with a function would be good.  see: http://neon-workwithdata.github.io/neon-data-institute-2016/R/classify-by-threshold-R/  for my take on forcing a legend outside of the plot area using par settings. You may have other better forms of magic to make this work well. :)
+
 1. Export the plot figure to a pdf – publishable
 1. Export the classified raster as a geotiff with NaFlagg = -9999 to an outputs folder.
+
+```{r set-library }
+library(raster)
+library(rgdal)
+
+```
+
+## Step One: Import Raster
+
+```{r import-raster}
+chm <- raster("../NEONdata/D17-California/TEAK/2013/lidar/Teak_lidarCHM.tif")
+```
+
+## Step Two:  Set values == 0 to NA (not trees)  
+
+```{r set-values-NA}
+#Sets those 0s to NA
+chm[ chm <= 0 ] <- NA
+
+#check this raster out, does it look like trees?
+plot(chm,
+     main="Canopy Height \n LowerTeakettle, California")
+```
+
+## Step Three:  Raster Classification By Height
+
+```{r raster-height-classify}
+#lets do a histogram and get some distribution
+hist(chm)
+
+#Want to focus on tree size class
+height.class.m <- c(0, 15, 1,
+                         15, 30, 2,
+                         30, 75, 3)
+
+reclass.m <- matrix(height.class.m,
+                    ncol = 3,
+                    byrow = TRUE)
+
+
+chm.class <- reclassify(chm, reclass.m)
+
+#here is a draft plot by class
+plot(chm.class,
+     main = "Teakettle Canopy Height By Class")
+```
+
+## Step Four:  I Am Legend
+## STEP Five:  Export to .pdf!
+
+```{r plot-with-legend}
+
+# plot outside of the plot region
+
+# make room for a legend
+par(xpd = FALSE, mar=c(5.1, 4.1, 4.1, 4.5))
+
+# plot
+pdf("../outputs/chm.class.pdf")
+p.chm <- plot(chm.class,
+     col=c("grey","blue","green"), # hard code colors, small trees (1)=white,
+		 #medium (2) = blue,  large trees (3) = green
+     main="Tree Canopy Height \nLower Teakettle",
+     legend=F)
+# allow legend to plot outside of bounds
+par(xpd=TRUE)
+
+# create the legend
+legend((par()$usr[2] + 20), 4103300,  # set x,y legend location
+       legend = c("Small", "Medium", "Large"),  # make sure the order matches the colors, next
+       fill = c("grey", "blue", "green"),
+       bty="n") # turn off border
+dev.off()
+```
+
+## Step Six:  Export the raster
+
+```{r export-raster}
+writeRaster(chm.class,
+            filename="../outputs/TEAK/Teak_nsAspect.tif",
+            format="GTiff",
+            options="COMPRESS=LZW",
+            overwrite = TRUE,
+            NAflag = -9999)
+
+
+```
