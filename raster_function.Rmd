@@ -122,4 +122,9 @@ writeRaster(chm.class,
             NAflag = -9999)
 
 
+####This creates a great log session text file at the end!!!!!!
+sink(paste0(format(Sys.time(), "%Y-%m-%d_%H%M%S"),
+"_sessionInfo.txt"))     #zero after paste has no spaces
+sessionInfo()
+sink()
 ```
